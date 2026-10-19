@@ -1,0 +1,741 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23ffcc00%22%2F%3E%3Ctext%20x%3D%2232%22%20y%3D%2241%22%20font-family%3D%22monospace%22%20font-size%3D%2224%22%20font-weight%3D%22700%22%20text-anchor%3D%22middle%22%20fill%3D%22%2315140f%22%3EHC%3C%2Ftext%3E%3C%2Fsvg%3E">
+<link rel="canonical" href="https://hcalchei.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Hassen Calchei">
+<meta property="og:description" content="Hassen Calchei: relevamiento, implementación de sistemas de gestión, CRM y gestión de proyectos para pymes.">
+<meta property="og:url" content="https://hcalchei.github.io/">
+<meta name="theme-color" content="#15140f">
+<title>Hassen Calchei</title>
+<meta name="description" content="Hassen Calchei: relevamiento, implementación de sistemas de gestión, CRM y gestión de proyectos para pymes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: tema oscuro único, a propósito, con acentos en amarillo. Arriba la promesa de servicio y cuatro cifras;
+   después los servicios como protagonistas y, al final, cómo trabajo y el contacto. */
+:root {
+  --tinta: #15140f;
+  --panel: #1e1d17;
+  --panel-2: #2a2920;
+  --linea: #3a382d;
+  --texto: #f6f4ee;
+  --gris: #c9c5ba;
+  --gris-2: #8f8a7d;
+  --amarillo: #ffcc00;
+  --amarillo-suave: rgba(255, 204, 0, 0.12);
+  --sobre-amarillo: #15140f;
+  --f-titulo: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --f-texto: "DM Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --t-chico: 0.8125rem;
+  --t-base: 1rem;
+  --t-medio: 1.1875rem;
+  --t-grande: clamp(1.25rem, 1rem + 1vw, 1.5rem);
+  --t-titulo: clamp(1.9rem, 1.3rem + 2.6vw, 2.75rem);
+  --t-hero: clamp(2.6rem, 1.4rem + 5.6vw, 5rem);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--tinta);
+  color: var(--texto);
+  font-family: var(--f-texto);
+  font-size: var(--t-base);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+h1, h2, h3, h4 { font-family: var(--f-titulo); margin: 0; line-height: 1.1; text-wrap: balance; letter-spacing: -0.02em; }
+p { margin: 0; }
+ul, ol { margin: 0; padding: 0; }
+:focus-visible { outline: 2px solid var(--amarillo); outline-offset: 3px; border-radius: 4px; }
+
+.wrap {
+  max-width: 1120px;
+  margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.mono { font-family: var(--f-mono); font-size: var(--t-chico); color: var(--gris-2); letter-spacing: 0.02em; }
+.eyebrow {
+  font-family: var(--f-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--amarillo);
+}
+
+/* ---------- Barra superior ---------- */
+.barra {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 10;
+  background: color-mix(in srgb, var(--tinta) 88%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--linea);
+}
+.barra .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 60px;
+}
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--f-titulo);
+  font-weight: 700;
+  font-size: 1.0625rem;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+.logo i {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  background: var(--amarillo);
+  color: var(--sobre-amarillo);
+  border-radius: 8px;
+  font-family: var(--f-mono);
+  font-style: normal;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  flex: none;
+}
+.nav { display: none; gap: 22px; }
+.nav a { text-decoration: none; font-size: 0.9375rem; color: var(--gris); }
+.nav a:hover { color: var(--texto); }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 6px;
+  font-family: var(--f-texto);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  text-decoration: none;
+  border: 1px solid var(--amarillo);
+  transition: background-color 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
+}
+.btn-si { background: var(--amarillo); color: var(--sobre-amarillo); }
+.btn-si:hover { background: var(--texto); border-color: var(--texto); }
+.btn-no { background: transparent; color: var(--texto); border-color: var(--linea); }
+.btn-no:hover { border-color: var(--amarillo); }
+.barra .btn { min-height: 38px; padding: 0 14px; font-size: 0.875rem; }
+
+/* ---------- Hero ---------- */
+.hero { padding-block: 48px 64px; border-bottom: 1px solid var(--linea); }
+.hero .wrap { display: grid; gap: 40px; }
+.hero-texto { display: grid; gap: 20px; align-content: start; min-width: 0; }
+.persona { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.persona b {
+  font-family: var(--f-titulo);
+  font-size: var(--t-medio);
+  font-weight: 600;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--f-mono);
+  font-size: 0.75rem;
+  color: var(--gris);
+  border: 1px solid var(--linea);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+.chip::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--amarillo); }
+.hero h1 {
+  font-size: var(--t-hero);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+}
+.hero h1 mark {
+  background: none;
+  color: var(--amarillo);
+}
+.bajada { color: var(--gris); font-size: var(--t-medio); max-width: 54ch; }
+.acciones { display: flex; flex-wrap: wrap; gap: 10px; }
+
+/* Cifras */
+.cifras {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--linea);
+  border: 1px solid var(--linea);
+  border-radius: 12px;
+  overflow: hidden;
+  min-width: 0;
+  align-self: center;
+}
+.cifras li { background: var(--panel); padding: 20px; display: grid; gap: 6px; align-content: start; }
+.cifras b {
+  font-family: var(--f-titulo);
+  font-size: clamp(2rem, 1.5rem + 2vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--amarillo);
+  font-variant-numeric: tabular-nums;
+}
+.cifras span { font-size: 0.875rem; color: var(--gris); line-height: 1.45; }
+
+/* ---------- Secciones ---------- */
+main > section { padding-block: 64px; border-bottom: 1px solid var(--linea); }
+.cabeza { display: grid; gap: 10px; margin-bottom: 32px; max-width: 62ch; }
+.cabeza h2 { font-size: var(--t-titulo); font-weight: 700; }
+.cabeza p { color: var(--gris); }
+
+/* Servicios */
+.servicios { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
+.servicio {
+  background: var(--panel);
+  border: 1px solid var(--linea);
+  border-radius: 12px;
+  padding: 22px;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 14px;
+  min-width: 0;
+  transition: border-color 0.2s ease;
+}
+.servicio:hover { border-color: var(--gris-2); }
+.servicio-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.servicio-top .mono { color: var(--amarillo); }
+.icono {
+  width: 40px; height: 40px;
+  border-radius: 8px;
+  background: var(--amarillo-suave);
+  color: var(--amarillo);
+  display: grid; place-items: center;
+  flex: none;
+}
+.icono svg { width: 22px; height: 22px; }
+.servicio h3 { font-size: var(--t-grande); font-weight: 600; }
+.servicio > p { color: var(--gris); }
+.incluye { list-style: none; display: grid; gap: 6px; font-size: 0.9375rem; }
+.incluye li { display: grid; grid-template-columns: 14px 1fr; gap: 8px; }
+.incluye li::before {
+  content: "";
+  width: 6px; height: 6px;
+  background: var(--amarillo);
+  border-radius: 1px;
+  margin-top: 9px;
+}
+.entregable {
+  border-top: 1px dashed var(--linea);
+  padding-top: 12px;
+  font-size: 0.875rem;
+  color: var(--gris);
+}
+.entregable b { font-family: var(--f-mono); font-weight: 500; font-size: 0.75rem; color: var(--amarillo); text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 2px; }
+.servicio.destacado { background: var(--amarillo); border-color: var(--amarillo); color: var(--sobre-amarillo); }
+.servicio.destacado .mono, .servicio.destacado > p, .servicio.destacado .entregable, .servicio.destacado .entregable b { color: var(--sobre-amarillo); }
+.servicio.destacado .icono { background: var(--sobre-amarillo); color: var(--amarillo); }
+.servicio.destacado .incluye li::before { background: var(--sobre-amarillo); }
+.servicio.destacado .entregable { border-top-color: color-mix(in srgb, var(--sobre-amarillo) 35%, transparent); }
+
+/* Cuatro frentes */
+.frentes { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 1px; background: var(--linea); border: 1px solid var(--linea); border-radius: 12px; overflow: hidden; }
+.frente { background: var(--tinta); padding: 22px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.frente h3 { font-size: var(--t-medio); font-weight: 600; }
+.frente p { color: var(--gris); font-size: 0.9375rem; }
+.etiquetas { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+.etiquetas li { font-family: var(--f-mono); font-size: 0.75rem; color: var(--gris); border: 1px solid var(--linea); border-radius: 4px; padding: 2px 8px; }
+
+/* Sistemas */
+.sistemas { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+.sistema { border: 1px solid var(--linea); border-radius: 12px; padding: 22px; display: grid; gap: 12px; align-content: start; min-width: 0; }
+.sistema.principal { grid-column: 1 / -1; background: var(--panel); }
+.sistema h3 { font-size: var(--t-grande); font-weight: 600; }
+.sistema p { color: var(--gris); font-size: 0.9375rem; max-width: 70ch; }
+.modulos { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 8px; list-style: none; }
+.modulos li { background: var(--panel-2); border-radius: 8px; padding: 10px 12px; display: grid; gap: 2px; }
+.modulos b { font-family: var(--f-titulo); font-weight: 600; font-size: 0.9375rem; }
+.modulos span { font-size: 0.8125rem; color: var(--gris-2); line-height: 1.4; }
+.rubros { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 4px; }
+
+/* Método */
+.metodo { list-style: none; display: grid; gap: 0; counter-reset: m; }
+.metodo li {
+  counter-increment: m;
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 14px;
+  padding-block: 16px;
+  border-top: 1px solid var(--linea);
+}
+.metodo li::before {
+  content: "0" counter(m);
+  font-family: var(--f-mono);
+  font-size: 0.875rem;
+  color: var(--amarillo);
+  padding-top: 3px;
+}
+.metodo h3 { font-size: var(--t-medio); font-weight: 600; }
+.metodo p { color: var(--gris); font-size: 0.9375rem; }
+.arranque {
+  margin-top: 28px;
+  background: var(--panel);
+  border: 1px solid var(--linea);
+  border-radius: 12px;
+  padding: 18px;
+  display: grid;
+  gap: 12px;
+}
+.arranque h3 { font-size: var(--t-medio); font-weight: 600; }
+.cadena { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 6px; align-items: center; }
+.cadena li { display: inline-flex; align-items: center; gap: 6px; font-size: 0.875rem; }
+.cadena li span { background: var(--panel-2); border-radius: 6px; padding: 4px 10px; }
+.cadena li:not(:last-child)::after { content: "→"; color: var(--amarillo); }
+.cadena li.hoy-cliente span { background: var(--amarillo); color: var(--sobre-amarillo); font-weight: 700; }
+.arranque p { color: var(--gris); font-size: 0.875rem; }
+
+/* Casos */
+.caso-principal { background: var(--panel); border: 1px solid var(--linea); border-radius: 12px; padding: 22px; display: grid; gap: 18px; min-width: 0; }
+.caso-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 14px; }
+.caso-top h3 { font-size: var(--t-grande); font-weight: 600; }
+.semanas { font-family: var(--f-mono); font-size: 0.75rem; color: var(--sobre-amarillo); background: var(--amarillo); border-radius: 4px; padding: 2px 8px; white-space: nowrap; }
+.caso-sub { color: var(--gris); margin-top: -10px; }
+.antes-despues { display: grid; gap: 12px; }
+.antes-despues > div { background: var(--panel-2); border-radius: 8px; padding: 14px; min-width: 0; }
+.antes-despues h4 { font-family: var(--f-mono); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gris-2); margin-bottom: 6px; }
+.antes-despues .despues h4 { color: var(--amarillo); }
+.antes-despues p { font-size: 0.9375rem; }
+.flujo { list-style: none; display: flex; flex-wrap: wrap; gap: 6px 4px; align-items: center; }
+.flujo li { display: inline-flex; align-items: center; gap: 4px; font-size: 0.8125rem; font-weight: 500; }
+.flujo li span { border: 1px solid var(--linea); border-radius: 6px; padding: 3px 9px; }
+.flujo li:not(:last-child)::after { content: "→"; color: var(--amarillo); padding-inline: 2px; }
+.hitos { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 12px; }
+.hito { border-top: 2px solid var(--amarillo); padding-top: 8px; display: grid; gap: 2px; }
+.hito b { font-family: var(--f-mono); font-weight: 500; font-size: 0.75rem; color: var(--amarillo); }
+.hito span { font-size: 0.875rem; color: var(--gris); line-height: 1.4; }
+.casos-mas { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); margin-top: 12px; }
+.caso { border: 1px solid var(--linea); border-radius: 12px; padding: 18px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.caso h3 { font-size: var(--t-medio); font-weight: 600; }
+.caso p { color: var(--gris); font-size: 0.875rem; }
+
+/* Mi rol */
+.rol { display: grid; gap: 28px; }
+.rol-texto { display: grid; gap: 14px; align-content: start; min-width: 0; }
+.rol-texto h2 { font-size: var(--t-titulo); font-weight: 700; }
+.rol-texto p { color: var(--gris); max-width: 58ch; }
+.rol-texto p strong { color: var(--texto); font-weight: 500; }
+.tareas { list-style: none; display: grid; gap: 8px; min-width: 0; }
+.tareas li { background: var(--panel); border: 1px solid var(--linea); border-radius: 10px; padding: 14px 16px; display: grid; gap: 2px; }
+.tareas b { font-family: var(--f-titulo); font-weight: 600; }
+.tareas span { color: var(--gris); font-size: 0.9375rem; }
+
+/* Contacto */
+.contacto { padding-block: 64px 32px; }
+.contacto .wrap { display: grid; gap: 28px; }
+.contacto h2 { font-size: var(--t-hero); font-weight: 700; line-height: 1; letter-spacing: -0.035em; }
+.contacto h2 mark { background: none; color: var(--amarillo); }
+.contacto-texto { display: grid; gap: 14px; min-width: 0; }
+.contacto-texto p { color: var(--gris); max-width: 52ch; }
+.filas { display: grid; gap: 10px; min-width: 0; }
+.fila { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; border: 1px solid var(--linea); border-radius: 10px; padding: 12px 14px; background: var(--panel); }
+.fila .eyebrow { min-width: 78px; }
+.valor { font-family: var(--f-mono); font-size: 0.9375rem; overflow-wrap: anywhere; flex: 1 1 180px; min-width: 0; }
+a.valor { text-decoration: none; }
+a.valor:hover { text-decoration: underline; text-decoration-color: var(--amarillo); }
+.copiar { font-family: var(--f-mono); font-size: 0.8125rem; min-height: 36px; padding: 0 12px; border-radius: 6px; border: 1px solid var(--amarillo); background: transparent; color: var(--amarillo); cursor: pointer; }
+.copiar:hover { background: var(--amarillo-suave); }
+.pie { border-top: 1px solid var(--linea); margin-top: 40px; padding-block: 20px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; }
+
+@media (min-width: 720px) {
+  .nav { display: flex; }
+  .antes-despues { grid-template-columns: 1fr 1fr; }
+  .metodo { grid-template-columns: 1fr 1fr; column-gap: 32px; }
+}
+@media (min-width: 960px) {
+  .hero .wrap { grid-template-columns: 1.15fr 0.85fr; align-items: center; gap: 56px; }
+  .metodo { grid-template-columns: repeat(3, 1fr); }
+  .rol { grid-template-columns: 1fr 1fr; gap: 48px; }
+  .contacto .wrap { grid-template-columns: 1.1fr 0.9fr; align-items: end; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn, .servicio { transition: none; }
+}
+</style>
+</head>
+<body>
+<header class="barra">
+  <div class="wrap">
+    <a class="logo" href="#inicio"><i aria-hidden="true">HC</i>Hassen Calchei</a>
+    <nav class="nav" aria-label="Secciones">
+      <a href="#servicios">Servicios</a>
+      <a href="#sistemas">Sistemas</a>
+      <a href="#metodo">Método</a>
+      <a href="#casos">Casos</a>
+    </nav>
+    <a class="btn btn-si" href="#contacto">Hablemos</a>
+  </div>
+</header>
+
+<main id="inicio">
+  <section class="hero" aria-labelledby="titulo">
+    <div class="wrap">
+      <div class="hero-texto">
+        <div class="persona">
+          <span class="chip">Gestión de proyectos · Sistemas de gestión para pymes</span>
+        </div>
+        <h1 id="titulo">Ordeno tu pyme y la llevo a un sistema que tu equipo <mark>usa todos los días.</mark></h1>
+        <p class="bajada">Acompaño a pymes argentinas a ordenar su administración y su área comercial, y a implementar sistemas de gestión. Relevo cómo trabaja hoy la empresa, armo la propuesta y gestiono el proyecto hasta que el sistema queda en uso.</p>
+        <div class="acciones">
+          <a class="btn btn-si" href="#servicios">Ver servicios</a>
+          <a class="btn btn-no" href="https://www.linkedin.com/in/hassen-calchei" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+
+      <ul class="cifras" aria-label="En números">
+        <li><b>4</b><span>implementaciones del área comercial y CRM</span></li>
+        <li><b>+500</b><span>clientes en cuenta corriente que administro hoy</span></li>
+        <li><b>71</b><span>casos de prueba diseñados para Odoo 19</span></li>
+        <li><b>3</b><span>demos completas de Odoo en rubros distintos</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="servicios" aria-labelledby="servicios-titulo">
+    <div class="wrap">
+      <div class="cabeza">
+        <span class="eyebrow">Servicios</span>
+        <h2 id="servicios-titulo">Qué puedo hacer por tu empresa</h2>
+        <p>Cada servicio se puede contratar por separado o como parte de una implementación completa, siempre con propuesta, alcance y plazos por escrito antes de arrancar.</p>
+      </div>
+      <div class="servicios">
+        <article class="servicio">
+          <div class="servicio-top">
+            <span class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg></span>
+            <span class="mono">Primer paso</span>
+          </div>
+          <h3>Relevamiento y diagnóstico</h3>
+          <ul class="incluye">
+            <li>Entrevistas con ventas, administración y depósito.</li>
+            <li>Mapa del circuito actual, de la consulta a la cobranza.</li>
+            <li>Dónde se pierde información y cuánto trabajo manual hay.</li>
+          </ul>
+          <p class="entregable"><b>Entregable</b>Informe del relevamiento y propuesta por etapas.</p>
+        </article>
+
+        <article class="servicio destacado">
+          <div class="servicio-top">
+            <span class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="4" width="7" height="7" rx="1.5"/><rect x="14" y="4" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>
+            <span class="mono">Servicio principal</span>
+          </div>
+          <h3>Implementación de Odoo</h3>
+          <ul class="incluye">
+            <li>Ventas, compras, inventario, producción y tesorería en un solo sistema.</li>
+            <li>Localización argentina: factura electrónica ARCA, percepciones y retenciones.</li>
+            <li>Migración de datos y plan de pruebas antes de salir en vivo.</li>
+          </ul>
+          <p class="entregable"><b>Entregable</b>Sistema configurado, con tus datos cargados y los casos de prueba aprobados.</p>
+        </article>
+
+        <article class="servicio">
+          <div class="servicio-top">
+            <span class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 5h16l-6 7.5V19l-4 1.5v-8z"/></svg></span>
+            <span class="mono">Ventas</span>
+          </div>
+          <h3>Área comercial y CRM</h3>
+          <ul class="incluye">
+            <li>Embudo de ventas por etapas, con un responsable por oportunidad.</li>
+            <li>Base única de clientes, plantillas de presupuesto y recordatorios.</li>
+            <li>Tablero semanal por vendedor: abiertas, cierres y motivos de pérdida.</li>
+          </ul>
+          <p class="entregable"><b>Entregable</b>CRM en uso y una reunión de ventas que se basa en el tablero.</p>
+        </article>
+
+        <article class="servicio">
+          <div class="servicio-top">
+            <span class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>
+            <span class="mono">Administración</span>
+          </div>
+          <h3>Ordenamiento administrativo</h3>
+          <ul class="incluye">
+            <li>Circuito de pedido, remito, factura y cobranza con controles claros.</li>
+            <li>Cuentas corrientes, cartera de cheques y comisiones sobre lo cobrado.</li>
+            <li>Información lista para el estudio contable y el cierre de ejercicio.</li>
+          </ul>
+          <p class="entregable"><b>Entregable</b>Circuito documentado, con responsables y controles por etapa.</p>
+        </article>
+
+        <article class="servicio">
+          <div class="servicio-top">
+            <span class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 8l9-4 9 4-9 4z"/><path d="M7 10v5c0 1.5 2.2 3 5 3s5-1.5 5-3v-5"/></svg></span>
+            <span class="mono">Después de la puesta en marcha</span>
+          </div>
+          <h3>Capacitación y acompañamiento</h3>
+          <ul class="incluye">
+            <li>Jornadas prácticas por rol, con los casos reales de tu empresa.</li>
+            <li>Manual de una página por rol y un referente interno para consultas.</li>
+            <li>Acompañamiento mensual para ajustes y nuevas necesidades.</li>
+          </ul>
+          <p class="entregable"><b>Entregable</b>Equipo capacitado y un sistema que se sigue usando.</p>
+        </article>
+
+        <article class="servicio">
+          <div class="servicio-top">
+            <span class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>
+            <span class="mono">Antes de presupuestar</span>
+          </div>
+          <h3>Demo con tus datos</h3>
+          <ul class="incluye">
+            <li>Investigación previa de tu empresa y tu rubro.</li>
+            <li>Una base de demostración con tus productos, clientes y circuito.</li>
+            <li>Recorrido paso a paso para ver cómo quedaría tu operación.</li>
+          </ul>
+          <p class="entregable"><b>Entregable</b>Demo personalizada y preguntas clave para definir el alcance.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="frentes" aria-labelledby="frentes-titulo">
+    <div class="wrap">
+      <div class="cabeza">
+        <span class="eyebrow">Qué ordeno</span>
+        <h2 id="frentes-titulo">Cuatro frentes de una pyme ordenada</h2>
+        <p>Vengo del lado del cliente: conozco los problemas reales de la administración de una pyme argentina y cómo un sistema de gestión los resuelve.</p>
+      </div>
+      <div class="frentes">
+        <article class="frente">
+          <h3>Gestión administrativa</h3>
+          <p>Pedidos, remitos, facturación, cuentas corrientes y cobranzas, con la liquidación de comisiones sobre lo cobrado.</p>
+          <ul class="etiquetas"><li>Facturación</li><li>Cobranzas</li><li>Comisiones</li></ul>
+        </article>
+        <article class="frente">
+          <h3>Tesorería y compras</h3>
+          <p>Bancos, cartera de cheques y ECHEQ, caja y pagos. Compras a proveedores y elaboradores externos.</p>
+          <ul class="etiquetas"><li>Bancos</li><li>ECHEQ</li><li>Proveedores</li></ul>
+        </article>
+        <article class="frente">
+          <h3>Mejora de procesos</h3>
+          <p>Detecto las tareas manuales que generan errores y las paso a registros que se pueden controlar.</p>
+          <ul class="etiquetas"><li>Relevamiento</li><li>Digitalización</li><li>Control</li></ul>
+        </article>
+        <article class="frente">
+          <h3>CRM y sistemas de gestión</h3>
+          <p>Ventas con seguimiento, stock al día y toda la operación conectada en un solo sistema.</p>
+          <ul class="etiquetas"><li>CRM</li><li>Odoo</li><li>ERP</li></ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="sistemas" aria-labelledby="sistemas-titulo">
+    <div class="wrap">
+      <div class="cabeza">
+        <span class="eyebrow">Sistemas de gestión</span>
+        <h2 id="sistemas-titulo">Con qué trabajo</h2>
+        <p>Elijo la herramienta según el problema, no al revés. Para la mayoría de las pymes, el centro es Odoo.</p>
+      </div>
+      <div class="sistemas">
+        <article class="sistema principal">
+          <span class="eyebrow">ERP</span>
+          <h3>Odoo 19 Enterprise</h3>
+          <p>Un solo sistema para toda la operación, con la localización argentina instalada. Se implementa por módulos y por etapas, empezando por lo que más le duele a la empresa.</p>
+          <ul class="modulos">
+            <li><b>Ventas</b><span>Presupuestos, pedidos y listas de precios</span></li>
+            <li><b>Inventario</b><span>Stock, entregas, lotes y vencimientos</span></li>
+            <li><b>Compras</b><span>Proveedores y reposición sugerida</span></li>
+            <li><b>Fabricación</b><span>Listas de materiales y órdenes</span></li>
+            <li><b>Facturación</b><span>Factura electrónica ARCA y libros de IVA</span></li>
+            <li><b>Tesorería</b><span>Bancos, cheques, ECHEQ y caja</span></li>
+            <li><b>CRM</b><span>Embudo, oportunidades y tablero</span></li>
+            <li><b>Punto de venta</b><span>Mostrador y showroom con stock en línea</span></li>
+          </ul>
+        </article>
+        <article class="sistema">
+          <span class="eyebrow">Fiscal</span>
+          <h3>Localización argentina</h3>
+          <p>Factura electrónica ARCA, percepciones y retenciones, libros de IVA e información lista para el estudio contable.</p>
+        </article>
+        <article class="sistema">
+          <span class="eyebrow">A medida</span>
+          <h3>Desarrollos propios</h3>
+          <p>Cuando hace falta algo puntual, lo construyo: por ejemplo, un motor de turnos que calcula la duración según el servicio y el tamaño del vehículo.</p>
+        </article>
+        <article class="sistema">
+          <span class="eyebrow">Demos armadas</span>
+          <h3>Rubros que ya recorrí</h3>
+          <p>Demos completas con datos de ejemplo, de punta a punta:</p>
+          <ul class="etiquetas rubros"><li>Elaboradora de alimentos</li><li>Deco y tienda online</li><li>Taller de detailing</li></ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="metodo" aria-labelledby="metodo-titulo">
+    <div class="wrap">
+      <div class="cabeza">
+        <span class="eyebrow">Cómo trabajo</span>
+        <h2 id="metodo-titulo">Del relevamiento al seguimiento</h2>
+        <p>El mismo orden en cada proyecto, para que el sistema quede en uso y no solo configurado.</p>
+      </div>
+      <ol class="metodo">
+        <li><div><h3>Relevamiento</h3><p>Entrevistas con cada área para entender cómo se trabaja hoy.</p></div></li>
+        <li><div><h3>Diseño del proceso</h3><p>Etapas, responsables y reglas de seguimiento, primero en papel.</p></div></li>
+        <li><div><h3>Planificación por hitos</h3><p>Cronograma semanal con entregables y fechas acordadas.</p></div></li>
+        <li><div><h3>Configuración</h3><p>Puesta a punto del sistema y carga de datos por fases, con respaldo de cada cambio.</p></div></li>
+        <li><div><h3>Capacitación</h3><p>Jornadas prácticas por rol y un manual de uso simple.</p></div></li>
+        <li><div><h3>Seguimiento</h3><p>Control de uso, tablero y ajustes. El sistema sirve si se usa.</p></div></li>
+      </ol>
+      <div class="arranque">
+        <h3>Cómo arranco con una empresa nueva</h3>
+        <ol class="cadena" aria-label="Pasos antes de empezar">
+          <li><span>Investigación</span></li>
+          <li class="hoy-cliente"><span>Demo con tus datos</span></li>
+          <li><span>Propuesta y términos</span></li>
+          <li><span>Firma</span></li>
+          <li><span>Arranque</span></li>
+        </ol>
+        <p>No empiezo sin una propuesta aprobada y los términos firmados: así los dos sabemos qué se entrega y cuándo.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="casos" aria-labelledby="casos-titulo">
+    <div class="wrap">
+      <div class="cabeza">
+        <span class="eyebrow">Casos</span>
+        <h2 id="casos-titulo">Implementaciones comerciales y CRM</h2>
+        <p>Empresas donde implementé el área comercial y el CRM, con planificación por hitos y capacitación de los equipos.</p>
+      </div>
+
+      <article class="caso-principal">
+        <div class="caso-top">
+          <h3>Tecnomax</h3>
+          <span class="semanas">10 semanas</span>
+        </div>
+        <p class="caso-sub">CRM y ordenamiento del proceso comercial</p>
+        <div class="antes-despues">
+          <div>
+            <h4>Antes</h4>
+            <p>Consultas y presupuestos dispersos entre WhatsApp, mail y planillas, sin seguimiento ni visibilidad de las ventas en curso.</p>
+          </div>
+          <div class="despues">
+            <h4>Después</h4>
+            <p>Todo el ciclo comercial en un solo sistema. La reunión semanal de ventas se basa en el tablero y cada presupuesto tiene un seguimiento asignado.</p>
+          </div>
+        </div>
+        <ul class="flujo" aria-label="Etapas del flujo"><li><span>Consulta</span></li><li><span>Presupuesto</span></li><li><span>Seguimiento</span></li><li><span>Negociación</span></li><li><span>Cierre</span></li></ul>
+        <div class="hitos">
+          <div class="hito"><b>H1 · sem. 1–2</b><span>Relevamiento y diseño del proceso</span></div>
+          <div class="hito"><b>H2 · sem. 3–4</b><span>Configuración y migración de clientes</span></div>
+          <div class="hito"><b>H3 · sem. 5–6</b><span>Capacitación del equipo comercial</span></div>
+          <div class="hito"><b>H4 · sem. 7–10</b><span>Puesta en marcha y ajustes</span></div>
+        </div>
+      </article>
+
+      <div class="casos-mas">
+        <article class="caso">
+          <div class="caso-top"><h3>Sport Cases</h3><span class="semanas">6 semanas</span></div>
+          <p>Organización de ventas y CRM, con 2 jornadas de capacitación y 30 días de acompañamiento.</p>
+          <ul class="flujo" aria-label="Etapas del flujo"><li><span>Consulta</span></li><li><span>CRM</span></li><li><span>Presupuesto</span></li><li><span>Seguimiento 48 h</span></li><li><span>Venta</span></li></ul>
+        </article>
+        <article class="caso">
+          <div class="caso-top"><h3>Pimux</h3><span class="semanas">6 semanas</span></div>
+          <p>CRM y circuito de pedidos, con capacitación por rol y control de uso a los 30 días.</p>
+          <ul class="flujo" aria-label="Etapas del flujo"><li><span>Alta</span></li><li><span>Oportunidad</span></li><li><span>Cotización</span></li><li><span>Pedido</span></li><li><span>Facturación</span></li></ul>
+        </article>
+        <article class="caso">
+          <div class="caso-top"><h3>Grupo MTR</h3><span class="semanas">8 semanas</span></div>
+          <p>Desarrollo del área comercial con metas por vendedor, tablero de seguimiento y revisión mensual.</p>
+          <ul class="flujo" aria-label="Etapas del flujo"><li><span>Prospección</span></li><li><span>Calificación</span></li><li><span>Reunión</span></li><li><span>Propuesta</span></li><li><span>Cierre</span></li></ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="rol" aria-labelledby="rol-titulo">
+    <div class="wrap rol">
+      <div class="rol-texto">
+        <span class="eyebrow">Sobre mí</span>
+        <h2 id="rol-titulo">Gestión de proyectos, de la primera charla a la puesta en marcha</h2>
+        <p>Mi trabajo es que el proyecto avance con objetivos claros y que el equipo lo adopte. <strong>Vengo de la administración de pymes</strong>: el ciclo comercial, la tesorería y las compras son mi trabajo diario, y eso me permite hablar el mismo idioma que el dueño y el equipo.</p>
+      </div>
+      <ol class="tareas">
+        <li><b>Primer contacto y relevamiento</b><span>Entiendo cómo trabaja la empresa y qué le duele hoy.</span></li>
+        <li><b>Demo y propuesta</b><span>Preparo la demo con sus datos, el alcance y los términos.</span></li>
+        <li><b>Planificación por hitos</b><span>Armo el cronograma con entregables y fechas acordadas.</span></li>
+        <li><b>Coordinación del proyecto</b><span>Hago de nexo entre la empresa y quienes configuran y desarrollan el sistema.</span></li>
+        <li><b>Seguimiento</b><span>Controlo el uso y los ajustes hasta que el sistema queda andando.</span></li>
+      </ol>
+    </div>
+  </section>
+</main>
+
+<section class="contacto" id="contacto" aria-labelledby="contacto-titulo">
+  <div class="wrap">
+    <div class="contacto-texto">
+      <span class="eyebrow">Contacto</span>
+      <h2 id="contacto-titulo">Ordenemos tu <mark>empresa.</mark></h2>
+      <p>Contame cómo trabajan hoy y qué te gustaría resolver. Te propongo un primer relevamiento sin compromiso.</p>
+    </div>
+    <div class="filas">
+      <div class="fila">
+        <span class="eyebrow">Email</span>
+        <span class="valor" id="email">hassen.y.calchei@gmail.com</span>
+        <button class="copiar" type="button" id="copiar-email" data-copy="hassen.y.calchei@gmail.com">Copiar</button>
+      </div>
+      <div class="fila">
+        <span class="eyebrow">LinkedIn</span>
+        <a class="valor" href="https://www.linkedin.com/in/hassen-calchei" target="_blank" rel="noopener">linkedin.com/in/hassen-calchei</a>
+      </div>
+      <div class="fila">
+        <span class="eyebrow">Zona</span>
+        <span class="valor">Buenos Aires, Argentina</span>
+      </div>
+    </div>
+  </div>
+  <div class="wrap pie">
+    <span class="logo"><i aria-hidden="true">HC</i>Hassen Calchei</span>
+    <span class="mono">Gestión de proyectos · Sistemas de gestión</span>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll(".copiar").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var texto = btn.getAttribute("data-copy");
+      var volver = function () { setTimeout(function () { btn.textContent = "Copiar"; }, 1800); };
+      var seleccionar = function () {
+        var el = document.getElementById("email");
+        var rango = document.createRange();
+        rango.selectNodeContents(el);
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(rango);
+        btn.textContent = "Seleccionado";
+        volver();
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(texto).then(function () { btn.textContent = "Copiado"; volver(); }, seleccionar);
+      } else {
+        seleccionar();
+      }
+    });
+  });
+</script>
+</body>
+</html>
